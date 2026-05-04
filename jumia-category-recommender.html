@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Jumia Category Recommender</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/papaparse@5/papaparse.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div id="r"></div>
+<script id="d" type="text/plain">
+path,l_1,l_2,l_3,l_4,vc
+Android Phones,Phones & Tablets,Mobile Phones,Smartphones,Android Phones,Mobile Phones
+iOS Phones,Phones & Tablets,Mobile Phones,Smartphones,iOS Phones,Mobile Phones
+Cell Phones,Phones & Tablets,Mobile Phones,Cell Phones,Cell Phones,Mobile Phones
+Mobile Phones,Phones & Tablets,Mobile Phones,,,Mobile Phones
+Smart Watches,Phones & Tablets,Accessories,Smart Watches,,Smart Watch
+Bluetooth Headsets,Phones & Tablets,Accessories,Bluetooth Headsets,,Mobile Accessories
+Cases,Phones & Tablets,Accessories,Cases,Cases,Mobile Accessories
+Portable Power Banks,Phones & Tablets,Accessories,Batteries & Battery Packs,Portable Power Banks,Mobile Accessories
+Wall Chargers,Phones & Tablets,Accessories,Chargers & Power Adapters,Wall Chargers,Mobile Accessories
+Screen Protectors,Phones & Tablets,Accessories,Screen Protectors,,Mobile Accessories
+Cables,Phones & Tablets,Accessories,Cables,,Mobile Accessories
+Smart Watch Bands,Phones & Tablets,Accessories,Smart Watch Accessories,Smart Watch Bands,Mobile Accessories
+Car Mounts,Phones & Tablets,Accessories,Car Accessories,Car Mounts,Mobile Accessories
+Car Chargers,Phones & Tablets,Accessories,Car Accessories,Car Chargers,Mobile Accessories
+Portable Bluetooth Speakers,Phones & Tablets,Accessories,Portable Speakers & Audio Docks,Portable Bluetooth Speakers,Mobile Accessories
+Corded Headsets,Phones & Tablets,Accessories,Corded Headsets,,Mobile Accessories
+Flip Cases,Phones & Tablets,Accessories,Cases,Flip Cases,Mobile Accessories
+AC Chargers,Phones & Tablets,Accessories,Battery Chargers,AC Chargers,Mobile Accessories
+Stands,Phones & Tablets,Accessories,Mounts & Stands,Stands,Mobile Accessories
+Styluses,Phones & Tablets,Accessories,,Styluses,Mobile Accessories
+iPad Tablets,Phones & Tablets,Tablets,iPad Tablets,,Tablets
+Other Tablets,Phones & Tablets,Tablets,Other Tablets,,Tablets
+Professional Tablets,Phones & Tablets,Tablets,Professional Tablets,,Tablets
+Cases,Phones & Tablets,Tablet Accessories,Bags Cases & Sleeves,Cases,Mobile Accessories
+Smart Watch Screen Protectors,Phones & Tablets,Accessories,Smart Watch Accessories,Smart Watch Screen Protectors,Mobile Accessories
+Corded Telephones,Phones & Tablets,Telephones & Accessories,Landline Phones,Corded Telephones,Landline Phones
+Cordless Telephones,Phones & Tablets,Telephones & Accessories,Landline Phones,Cordless Telephones,Landline Phones
+Laptops,Computing,Computers & Accessories,Computers & Tablets,Laptops,Laptops & Desktops
+Notebooks,Computing,Computers & Accessories,Computers & Tablets,Laptops,Laptops & Desktops
+Gaming Laptops,Computing,Computers & Accessories,Computers & Tablets,Laptops,Laptops & Desktops
+Towers,Computing,Computers & Accessories,Computers & Tablets,Desktops,Laptops & Desktops
+Monitors,Computing,Computers & Accessories,Monitors,,Desktops & Monitors
+External Hard Drives,Computing,Computers & Accessories,Data Storage,External Hard Drives,Storage
+USB Flash Drives,Computing,Computers & Accessories,Data Storage,USB Flash Drives,Storage
+Internal Solid State Drives,Computing,Computers & Accessories,Computer Components,Internal Solid State Drives,Components & Spare parts
+Internal Hard Drives,Computing,Computers & Accessories,Computer Components,Internal Hard Drives,Components & Spare parts
+Graphics Cards,Computing,Computers & Accessories,Computer Components,Graphics Cards,Components & Spare parts
+Memory,Computing,Computers & Accessories,Computer Components,Memory,Components & Spare parts
+Batteries,Computing,Computers & Accessories,Laptop Accessories,Batteries,Components & Spare parts
+Multi-Function Printers,Computing,Computers & Accessories,Printers,Multi-Function Printers,Printer & Scanners
+Laser Printers,Computing,Computers & Accessories,Printers,Laser Printers,Printer & Scanners
+Inkjet Printers,Computing,Computers & Accessories,Printers,Inkjet Printers,Printer & Scanners
+Label Printers,Computing,Computers & Accessories,Printers,Label Printers,Printer & Scanners
+Printers,Computing,Computers & Accessories,Printers,,Printer & Scanners
+Routers,Computing,Computers & Accessories,Networking Products,Routers,Network Products
+Wireless Access Points,Computing,Computers & Accessories,Networking Products,Wireless Access Points,Network Products
+Backpacks,Computing,Computers & Accessories,Laptop Accessories,Bags Cases & Sleeves,Computing Accessories
+Sleeves,Computing,Computers & Accessories,Laptop Accessories,Bags Cases & Sleeves,Computing Accessories
+Stands,Computing,Computers & Accessories,Laptop Accessories,Stands,Computing Accessories
+Lapdesks,Computing,Computers & Accessories,Laptop Accessories,Lapdesks,Computing Accessories
+Inkjet Printer Ink,Computing,Computer Accessories,Printer Ink & Toner,Inkjet Printer Ink,Printer & Scanners
+Laser Printer Drums & Toner,Computing,Computer Accessories,Printer Ink & Toner,Laser Printer Drums & Toner,Printer & Scanners
+Printer Ink & Toner,Computing,Computer Accessories,Printer Ink & Toner,,Printer & Scanners
+Mice,Computing,Computer Accessories,Keyboards Mice & Accessories,Mice,Computing Accessories
+Keyboards,Computing,Computer Accessories,Keyboards Mice & Accessories,Keyboards,Computing Accessories
+Keyboard & Mouse Combos,Computing,Computer Accessories,Keyboards Mice & Accessories,Keyboard & Mouse Combos,Computing Accessories
+Mouse Pads,Computing,Computer Accessories,Keyboards Mice & Accessories,Keyboard & Mice Accessories,Computing Accessories
+Gaming Mice,Computing,Computer Accessories,Game Hardware,PC Game Hardware,Computing Accessories
+Gaming Keyboards,Computing,Computer Accessories,Game Hardware,PC Game Hardware,Computing Accessories
+Headsets,Computing,Computer Accessories,Game Hardware,PC Game Hardware,Headphones
+USB Fans,Computing,Computer Accessories,USB Gadgets,USB Fans,Computing Accessories
+Surge Protectors,Computing,Computer Accessories,Surge Protectors,,Computing Accessories
+Uninterrupted Power Supply (UPS),Computing,Computer Accessories,Uninterrupted Power Supply (UPS),,Computing Accessories
+Computer Headsets,Computing,Computer Accessories,Audio & Video Accessories,Computer Headsets,Headphones
+Large screen TV,Electronics,Television & Video,Televisions,Large screen TV,Televisions
+LED & LCD TVs,Electronics,Television & Video,Televisions,LED & LCD TVs,Televisions
+Smart TVs,Electronics,Television & Video,Televisions,Smart TVs,Televisions
+Receivers,Electronics,Television & Video,Satellite Television,Receivers,TV Receivers
+Streaming Media Players,Electronics,Television & Video,Streaming Media Players,,Other Audio & Video
+Earbud Headphones,Electronics,Headphones,Earbud Headphones,,Earphones
+Over-Ear Headphones,Electronics,Headphones,Over-Ear Headphones,,Earphones
+On-Ear Headphones,Electronics,Headphones,On-Ear Headphones,,Earphones
+Bluetooth Speakers,Electronics,Home Audio,Speakers,Bluetooth Speakers,Home Theatre & Hifi
+Subwoofers,Electronics,Audio,Speakers,Subwoofers,Home Audio
+Radios,Electronics,Audio,Radios,,Home Audio
+Smart Watches,Electronics,Wearable Technology,Smart Watches,,wearable Technology
+Dome Cameras,Electronics,Camera & Photo,Video Surveillance,Surveillance Cameras,Camera
+Video Projectors,Electronics,Camera & Photo,Projectors,Video Projectors,Camera
+Flash Strobe,Electronics,Cameras,Flash Strobe,,Camera
+Security & Surveillance Cameras,Electronics,Cameras,Security & Surveillance Cameras,,Camera
+TV Wall Mounts,Electronics,Accessories & Supplies,Audio & Video Accessories,TV Wall Mounts,Electronics Accessories
+TV Remote Controls,Electronics,Accessories & Supplies,Audio & Video Accessories,Remote Controls,Electronics Accessories
+Microphones,Electronics,Accessories & Supplies,Microphones,,Electronics Accessories
+Earphone & Headphone Cases,Electronics,Accessories & Supplies,Audio & Video Accessories,Earphone & Headphone Accessories,Electronics Accessories
+Battery Chargers,Electronics,Accessories & Supplies,Batteries Chargers & Accessories,Battery Chargers,Electronics Accessories
+Batteries Chargers & Accessories,Electronics,Accessories & Supplies,Batteries Chargers & Accessories,,Electronics Accessories
+Biometrics,Electronics,Security & Surveillance,Biometrics,,Ebook readers
+Camcorder Bundles,Electronics,Camera & Photo,Video,Camcorder Bundles,Camera
+Surveillance DVR Kits,Electronics,Camera & Photo,Video Surveillance,Surveillance Systems,Camera
+Bullet Cameras,Electronics,Camera & Photo,Video Surveillance,Surveillance Cameras,Camera
+Continuous Output Lighting,Electronics,Accessories & Supplies,Camera & Photo Accessories,Lighting & Studio,Camera Accessories
+Air Fryers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Microwave Ovens,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Countertop Microwave Ovens,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Compact Microwave Ovens,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Speed-Cooking Microwave Ovens,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Electric Kettles,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Coffee Makers,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Espresso Machines,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Milk Frothers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Rice Cookers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Food Processors,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Countertop Blenders,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Hand Blenders,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Blenders,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Stand Mixers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Hand Mixers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Sandwich Makers & Panini Presses,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Contact Grills,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Waffle Irons,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Convection Ovens,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Electric Pressure Cookers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Citrus Juicers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Centrifugal Juicers,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Beverage Refrigerators,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Shaved Ice Machines,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Electric Coffee Percolators,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Super-Automatic Espresso Machines,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Stovetop Espresso & Moka Pots,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Espresso Machine & Coffeemaker Combos,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Coffee Grinders,Home & Office,Home & Kitchen,Kitchen & Dining,Coffee Tea & Espresso,Small Appliances
+Countertop Burners,Home & Office,Home & Kitchen,Kitchen & Dining,Small Appliances,Small Appliances
+Choppers,Home & Office,Home & Kitchen,Kitchen & Dining,Kitchen Utensils & Gadgets,Small Appliances
+Choppers & Mincers,Home & Office,Home & Kitchen,Kitchen & Dining,Kitchen Utensils & Gadgets,Small Appliances
+Mincers,Home & Office,Home & Kitchen,Kitchen & Dining,Kitchen Utensils & Gadgets,Small Appliances
+Cookware Sets,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+Woks & Stir-Fry Pans,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+Grill Pans,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+Multipots & Pasta Pots,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+Pressure Cookers,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+All Pans,Home & Office,Home & Kitchen,Kitchen & Dining,Cookware,Home Kitchen Bath
+Faucet Water Filters,Home & Office,Home & Kitchen,Kitchen & Dining,Water Coolers & Filters,Small Appliances
+Replacement Water Filters,Home & Office,Home & Kitchen,Kitchen & Dining,Water Coolers & Filters,Small Appliances
+Under-Sink & Countertop Filtration,Home & Office,Home & Kitchen,Kitchen & Dining,Water Coolers & Filters,Small Appliances
+Water Coolers & Filters,Home & Office,Home & Kitchen,Kitchen & Dining,Water Coolers & Filters,Small Appliances
+Water Coolers,Home & Office,Home & Kitchen,Kitchen & Dining,Water Coolers & Filters,Small Appliances
+Coffee Cups & Mugs,Home & Office,Home & Kitchen,Kitchen & Dining,Dining & Entertaining,Home Kitchen Bath
+Dinnerware Sets,Home & Office,Home & Kitchen,Kitchen & Dining,Dining & Entertaining,Home Kitchen Bath
+Tablecloths,Home & Office,Home & Kitchen,Kitchen & Dining,Dining & Entertaining,Home Kitchen Bath
+Serving Trays,Home & Office,Home & Kitchen,Kitchen & Dining,Dining & Entertaining,Home Kitchen Bath
+Cups Mugs & Saucers,Home & Office,Home & Kitchen,Kitchen & Dining,Dining & Entertaining,Home Kitchen Bath
+Food Savers & Storage Containers,Home & Office,Home & Kitchen,Kitchen & Dining,Storage & Organization,Home Kitchen Bath
+Lunch Boxes,Home & Office,Home & Kitchen,Kitchen & Dining,Storage & Organization,Home Kitchen Bath
+Thermoses,Home & Office,Home & Kitchen,Kitchen & Dining,Storage & Organization,Home Kitchen Bath
+Commuter & Travel Mugs,Home & Office,Home & Kitchen,Kitchen & Dining,Storage & Organization,Home Kitchen Bath
+Travel Insulated Tumblers,Home & Office,Home & Kitchen,Kitchen & Dining,Travel & To-Go Drinkware,Home Kitchen Bath
+Water Bottles,Home & Office,Home & Kitchen,Kitchen & Dining,Travel & To-Go Drinkware,Home Kitchen Bath
+Refrigerators,Home & Office,Tools & Home Improvement,Appliances,Refrigerators,Large Appliances
+Washers,Home & Office,Tools & Home Improvement,Appliances,Washers & Dryers,Large Appliances
+Washers & Dryers,Home & Office,Tools & Home Improvement,Appliances,Washers & Dryers,Large Appliances
+Upright Freezers,Home & Office,Tools & Home Improvement,Appliances,Freezers,Large Appliances
+Chest Freezers,Home & Office,Tools & Home Improvement,Appliances,Freezers,Large Appliances
+Freezers,Home & Office,Tools & Home Improvement,Appliances,Freezers,Large Appliances
+Dishwashers,Home & Office,Tools & Home Improvement,Appliances,Dishwashers,Large Appliances
+Built-In Dishwashers,Home & Office,Tools & Home Improvement,Appliances,Dishwashers,Large Appliances
+Portable & Countertop Dishwashers,Home & Office,Tools & Home Improvement,Appliances,Dishwashers,Large Appliances
+Single Wall Ovens,Home & Office,Tools & Home Improvement,Appliances,Wall Ovens,Large Appliances
+Wall Ovens,Home & Office,Tools & Home Improvement,Appliances,Wall Ovens,Large Appliances
+Combination Microwave & Wall Ovens,Home & Office,Tools & Home Improvement,Appliances,Wall Ovens,Large Appliances
+Cooktops,Home & Office,Tools & Home Improvement,Appliances,Cooktops,Large Appliances
+Range Hoods,Home & Office,Tools & Home Improvement,Appliances,Range Hoods,Large Appliances
+Water Heaters,Home & Office,Tools & Home Improvement,Rough Plumbing,Water Heaters & Parts,Large Appliances
+Hot & Cold Water Dispensers,Home & Office,Tools & Home Improvement,Kitchen & Bath Fixtures,Kitchen Fixtures,Large Appliances
+Water Dispensers,Home & Office,Tools & Home Improvement,Kitchen & Bath Fixtures,Kitchen Fixtures,Large Appliances
+Hot Water Dispensers,Home & Office,Tools & Home Improvement,Kitchen & Bath Fixtures,Kitchen Fixtures,Large Appliances
+Split-System,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Air Conditioners & Accessories,Large Appliances
+Portable AC,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Air Conditioners & Accessories,Large Appliances
+Wall AC,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Air Conditioners & Accessories,Large Appliances
+Air Conditioners,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Air Conditioners & Accessories,Large Appliances
+Air Conditioner Accessories,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Air Conditioners & Accessories,Large Appliances
+Pedestal Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Wall-Mounted Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Standing Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Window Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Box Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Ceiling Fans,Home & Office,Home & Kitchen,Lighting & Ceiling Fans,Ceiling Fans & Accessories,Small Appliances
+Rechargeable Fans,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Household Fans,Small Appliances
+Space Heaters,Home & Office,Home & Kitchen,Heating Cooling & Air Quality,Space Heaters & Accessories,Small Appliances
+Irons,Home & Office,Home & Kitchen,Irons & Steamers,Irons,Small Appliances
+Garment Steamers,Home & Office,Home & Kitchen,Irons & Steamers,Garment Steamers,Small Appliances
+Ironing Boards,Home & Office,Home & Kitchen,Irons & Steamers,Ironing Boards,Home Fixture
+Vacuums,Home & Office,Home & Kitchen,Vacuums & Floor Care,Vacuums,Small Appliances
+Canister Vacuums,Home & Office,Home & Kitchen,Vacuums & Floor Care,Vacuums,Small Appliances
+Handheld Vacuums,Home & Office,Home & Kitchen,Vacuums & Floor Care,Vacuums,Small Appliances
+Dry Vacuums,Home & Office,Home & Kitchen,Vacuums & Floor Care,Vacuums,Small Appliances
+Steam Mops,Home & Office,Home & Kitchen,Vacuums & Floor Care,Steam Cleaners Steam Mops & Accessories,Small Appliances
+Cookers,Home & Office,Appliances,Cooking Appliances,Cookers,Large Appliances
+Gas Cook Top,Home & Office,Appliances,Cooking Appliances,Cook Top,Small Appliances
+Electric Cook Top,Home & Office,Appliances,Cooking Appliances,Cook Top,Small Appliances
+Cooking Appliances,Home & Office,Appliances,Cooking Appliances,,Small Appliances
+Mattresses,Home & Office,Home & Kitchen,Furniture,Bedroom Furniture,Home Kitchen Bath
+Beds,Home & Office,Home & Kitchen,Furniture,Bedroom Furniture,Furniture & Decor
+Sofas & Couches,Home & Office,Home & Kitchen,Furniture,Living Room Furniture,Furniture & Decor
+Sectional Sofa,Home & Office,Home & Kitchen,Furniture,Living Room Furniture,Furniture & Decor
+Chairs,Home & Office,Home & Kitchen,Furniture,Living Room Furniture,Furniture & Decor
+Tables,Home & Office,Home & Kitchen,Furniture,Living Room Furniture,Furniture & Decor
+Coffee Tables,Home & Office,Home & Kitchen,Furniture,Living Room Furniture,Furniture & Decor
+Bean Bags,Home & Office,Home & Kitchen,Furniture,Game & Recreation Room Furniture,Furniture & Decor
+Home Office Desks,Home & Office,Home & Kitchen,Furniture,Home Office Furniture,Furniture & Decor
+Swivel Chairs,Home & Office,Home & Kitchen,Furniture,Home Office Furniture,Furniture & Decor
+Adjustable Chairs,Home & Office,Home & Kitchen,Furniture,Home Office Furniture,Furniture & Decor
+Home Office Desk Chairs,Home & Office,Home & Kitchen,Furniture,Home Office Furniture,Furniture & Decor
+Desk Chairs,Home & Office,Office Products,Office Furniture & Lighting,Chairs & Sofas,Furniture & Decor
+Chairs & Sofas,Home & Office,Office Products,Office Furniture & Lighting,Chairs & Sofas,Furniture & Decor
+Office Furniture & Lighting,Home & Office,Office Products,Office Furniture & Lighting,,Furniture & Decor
+Sheet & Pillowcase Sets,Home & Office,Home & Kitchen,Bedding,Sheets & Pillowcases,Home Kitchen Bath
+Bed Pillows,Home & Office,Home & Kitchen,Bedding,Bed Pillows & Positioners,Home Kitchen Bath
+Bed Blankets,Home & Office,Home & Kitchen,Bedding,Blankets & Throws,Home Kitchen Bath
+Blankets & Throws,Home & Office,Home & Kitchen,Bedding,Blankets & Throws,Home Kitchen Bath
+Quilt Sets,Home & Office,Home & Kitchen,Bedding,Bedding Sets & Collections,Home Kitchen Bath
+Comforter Sets,Home & Office,Home & Kitchen,Bedding,Bedding Sets & Collections,Home Kitchen Bath
+Duvet Cover Sets,Home & Office,Home & Kitchen,Bedding,Bedding Sets & Collections,Home Kitchen Bath
+Mattress Toppers,Home & Office,Home & Kitchen,Bedding,Mattress Toppers,Home Kitchen Bath
+Mattress Protectors,Home & Office,Home & Kitchen,Bedding,Mattress Pads & Protectors,Home Kitchen Bath
+Pillowcases,Home & Office,Home & Kitchen,Bedding,Sheets & Pillowcases,Home Kitchen Bath
+Bath Towels,Home & Office,Home & Kitchen,Bath,Towels,Home Kitchen Bath
+Beach Towels,Home & Office,Home & Kitchen,Bath,Towels,Home Kitchen Bath
+Towel Sets,Home & Office,Home & Kitchen,Bath,Towels,Home Kitchen Bath
+Bathroom Storage & Organization,Home & Office,Home & Kitchen,Storage & Organization,Bathroom Storage & Organization,Home Fixture
+Bathroom Shelves,Home & Office,Home & Kitchen,Bath,Bathroom Shelves,Home Fixture
+Bathroom Accessory Sets,Home & Office,Home & Kitchen,Bath,Bathroom Accessories,Home Kitchen Bath
+Tissue Holders,Home & Office,Home & Kitchen,Bath,Bathroom Accessories,Home Kitchen Bath
+Machine Woven Rug,Home & Office,Home & Kitchen,Home Decor,Area Rugs Runners & Pads,Furniture & Decor
+Rug Pads,Home & Office,Home & Kitchen,Home Decor,Area Rugs Runners & Pads,Furniture & Decor
+Draperies & Curtains,Home & Office,Home & Kitchen,Home Decor,Window Treatments,Furniture & Decor
+Sofa Slipcovers,Home & Office,Home & Kitchen,Home Decor,Slipcovers,Furniture & Decor
+Wall Stickers,Home & Office,Home & Kitchen,Home Decor,Home Decor Accents,Furniture & Decor
+Floating Shelves,Home & Office,Home & Kitchen,Home Decor,Home Decor Accents,Furniture & Decor
+Artificial Flowers,Home & Office,Home & Kitchen,Home Decor,Artificial Plants,Furniture & Decor
+Artificial Trees,Home & Office,Home & Kitchen,Home Decor,Artificial Plants,Furniture & Decor
+Artificial Plants,Home & Office,Home & Kitchen,Home Decor,Artificial Plants,Furniture & Decor
+Wall Clocks,Home & Office,Home & Kitchen,Home Decor,Clocks,Furniture & Decor
+Incense,Home & Office,Home & Kitchen,Home Decor,Home Fragrance,Furniture & Decor
+Decorative Candle Lanterns,Home & Office,Home & Kitchen,Home Decor,Candles & Holders,Furniture & Decor
+Posters & Prints,Home & Office,Home & Kitchen,Wall Art,Posters & Prints,Furniture & Decor
+Chandeliers,Home & Office,Home & Kitchen,Lighting & Ceiling Fans,Ceiling Lights,Home Fixture
+Pendant Lights,Home & Office,Home & Kitchen,Lighting & Ceiling Fans,Ceiling Lights,Home Fixture
+Table Lamps,Home & Office,Home & Kitchen,Lighting & Ceiling Fans,Lamps & Lighting,Home Fixture
+Rope Lights,Home & Office,Home & Kitchen,Seasonal Decor,Seasonal Lighting,Furniture & Decor
+LED Bulbs,Home & Office,Tools & Home Improvement,Light Bulbs,LED Bulbs,Home Fixture
+Shoe Organizers,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Clothes Hangers,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Space Saver Bags,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Standard Hangers,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Garment Racks,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Drawer Organizers,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Laundry Baskets,Home & Office,Home & Kitchen,Storage & Organization,Laundry Storage & Organization,Home Fixture
+Drying Racks,Home & Office,Home & Kitchen,Storage & Organization,Laundry Storage & Organization,Home Fixture
+Storage Cabinets,Home & Office,Home & Kitchen,Storage & Organization,Storage Cabinets,Home Fixture
+Free Standing Shoe Racks,Home & Office,Home & Kitchen,Storage & Organization,Clothing & Closet Storage,Home Fixture
+Jewelry Armoires,Home & Office,Home & Kitchen,Storage & Organization,Jewelry Boxes & Organizers,Home Fixture
+Ladder Shelves,Home & Office,Home & Kitchen,Furniture,Accent Furniture,Furniture & Decor
+Standing Shelf Units,Home & Office,Home & Kitchen,Storage & Organization,Racks Shelves & Drawers,Others
+Power Water Pumps,Home & Office,Tools & Home Improvement,Rough Plumbing,Water Pumps Parts & Accessories,Home Fixture
+Door Hardware & Locks,Home & Office,Tools & Home Improvement,Hardware,Door Hardware & Locks,Home Fixture
+Fan Motors,Home & Office,Tools & Home Improvement,Electrical,Electric Motors,Home Fixture
+Ventilation Fans,Home & Office,Tools & Home Improvement,Building Supplies,HVAC,Tools
+Step Ladders,Home & Office,Tools & Home Improvement,Building Supplies,Ladders,Tools
+Ladders,Home & Office,Tools & Home Improvement,Building Supplies,Ladders,Tools
+Wallpaper,Home & Office,Tools & Home Improvement,Painting Supplies & Wall Treatments,Wallpaper,Tools
+Drills,Home & Office,Tools & Home Improvement,Power & Hand Tools,Power Tools,Tools
+Hotel Safes,Home & Office,Tools & Home Improvement,Safety & Security,Safes,Home Fixture
+Safes,Home & Office,Office Products,Office & School Supplies,Forms Recordkeeping & Money Handling,Stationary
+Copy & Multipurpose Paper,Home & Office,Office Products,Office & School Supplies,Paper,Stationary
+Photo Paper,Home & Office,Office Products,Office & School Supplies,Paper,Stationary
+Notebooks & Writing Pads,Home & Office,Office Products,Office & School Supplies,Paper,Stationary
+Pens & Refills,Home & Office,Office Products,Office & School Supplies,Education & Crafts,Stationary
+Adhesives & Glue,Home & Office,Office Products,Office & School Supplies,Tape Adhesives & Fasteners,Stationary
+Bill Counters,Home & Office,Office Products,Office & School Supplies,Forms Recordkeeping & Money Handling,Stationary
+Sewing Machines,Home & Office,Arts Crafts & Sewing,Sewing,Sewing Machines,Stationary
+Beads & Bead Assortments,Home & Office,Arts Crafts & Sewing,Beading & Jewelry Making,Beads & Bead Assortments,Stationary
+Hair Dryers,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Tools & Appliances,Beauty Appliances
+Hair Straighteners,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Tools & Appliances,Beauty Appliances
+Curling Irons,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Tools & Appliances,Beauty Appliances
+Hot-Air Brushes,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Tools & Appliances,Beauty Appliances
+Hair Brushes,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Tools & Appliances,Beauty Appliances
+Hair Clippers,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Cutting Tools,Beauty Appliances
+Electric Shavers,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Epilators,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Razors & Blades,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Epilators Groomers & Trimmers,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Laser Hair Removal,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Waxing,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Nose & Ear Hair Trimmers,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Shaving & Grooming Sets,Health & Beauty,Beauty & Personal Care,Personal Care,Shave & Hair Removal,Beauty Appliances
+Lipstick,Health & Beauty,Beauty & Personal Care,Makeup,Lips,Makeup
+Lip Gloss,Health & Beauty,Beauty & Personal Care,Makeup,Lips,Makeup
+Lip Liner,Health & Beauty,Beauty & Personal Care,Makeup,Lips,Makeup
+Lip Balm & Treatment,Health & Beauty,Beauty & Personal Care,Makeup,Lips,Makeup
+Foundation,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Powder,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Blush,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Concealers & Color Corrector,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Bronzers & Highlighters,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Face Primer,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Contouring,Health & Beauty,Beauty & Personal Care,Makeup,Face,Makeup
+Mascara,Health & Beauty,Beauty & Personal Care,Makeup,Eyes,Makeup
+Eyeshadow,Health & Beauty,Beauty & Personal Care,Makeup,Eyes,Makeup
+Eyeliner & Kajal,Health & Beauty,Beauty & Personal Care,Makeup,Eyes,Makeup
+Eyebrow Makeup,Health & Beauty,Beauty & Personal Care,Makeup,Eyes,Makeup
+Nail Polish,Health & Beauty,Beauty & Personal Care,Makeup,Nails,Health & Beauty
+Makeup Remover,Health & Beauty,Beauty & Personal Care,Makeup,Makeup Remover,Makeup
+Temporary Tattoos,Health & Beauty,Beauty & Personal Care,Makeup,Body,Makeup
+False Nails,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Feet Hand & Nail Tools,Health & Beauty
+Blenders & Sponges,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Makeup Brushes & Tools,Health & Beauty
+Brush Sets,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Makeup Brushes & Tools,Health & Beauty
+Cosmetic Bags,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Bags & Cases,Health & Beauty
+Cosmetic Display Cases,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Bags & Cases,Health & Beauty
+Creams & Moisturizers,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Face Moisturizers,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Serums,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Cleansers,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Sunscreens,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Facial Sunscreens,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Masks,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Scrubs,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Night Creams,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Gels,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Creams,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Washes,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Body Washes,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Moisturizers,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Lotions,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Soaps,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Hand Soaps,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Body Scrubs,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Exfoliators,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Scrubs & Body Treatments,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Treatments & Masks,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Rollers,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Skin Care,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Sets & Kits,Health & Beauty,Beauty & Personal Care,Personal Care,Skin Care,Health & Beauty
+Deodorants & Antiperspirants,Health & Beauty,Beauty & Personal Care,Personal Care,Deodorants & Antiperspirants,Health & Beauty
+Eau de Parfum Women,Health & Beauty,Beauty & Personal Care,Fragrance,Women's,Fragrances
+Eau de Parfum Men,Health & Beauty,Beauty & Personal Care,Fragrance,Men's,Fragrances
+Body Sprays Women,Health & Beauty,Beauty & Personal Care,Fragrance,Women's,Fragrances
+Body Sprays Men,Health & Beauty,Beauty & Personal Care,Fragrance,Men's,Fragrances
+Eau de Toilette,Health & Beauty,Beauty & Personal Care,Fragrance,Men's,Fragrances
+Shampoo,Health & Beauty,Beauty & Personal Care,Hair Care,Shampoo,Health & Beauty
+Daily Shampoo,Health & Beauty,Beauty & Personal Care,Hair Care,Shampoo,Health & Beauty
+Shampoo Plus Conditioner,Health & Beauty,Beauty & Personal Care,Hair Care,Shampoo,Health & Beauty
+Conditioner,Health & Beauty,Beauty & Personal Care,Hair Care,Conditioner,Health & Beauty
+Hair Masks,Health & Beauty,Beauty & Personal Care,Hair Care,Hair & Scalp Care,Health & Beauty
+Hair & Scalp Treatments,Health & Beauty,Beauty & Personal Care,Hair Care,Hair & Scalp Care,Health & Beauty
+Treatment Oils,Health & Beauty,Beauty & Personal Care,Hair Care,Hair & Scalp Care,Health & Beauty
+Oils,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Products,Health & Beauty
+Serums Hair,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Products,Health & Beauty
+Mousses & Foams,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Products,Health & Beauty
+Hair Sprays,Health & Beauty,Beauty & Personal Care,Hair Care,Styling Products,Health & Beauty
+Hair Color,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Coloring Products,Health & Beauty
+Wigs,Health & Beauty,Beauty & Personal Care,Hair Care,Extensions Wigs & Accessories,Health & Beauty
+Hair Loss Products,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Loss Products,Health & Beauty
+Hair Regrowth Treatments,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Loss Products,Health & Beauty
+Elastics & Ties,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Accessories,Health & Beauty
+Clips,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Accessories,Health & Beauty
+Hair Drying Towels,Health & Beauty,Beauty & Personal Care,Hair Care,Hair Accessories,Health & Beauty
+Sets & Kits Hair,Health & Beauty,Beauty & Personal Care,Hair Care,Sets & Kits,Health & Beauty
+Blood Pressure Monitors,Health & Beauty,Medical Supplies & Equipment,Health Monitors,Blood Pressure Monitors,Health & Beauty
+Blood Glucose Monitors,Health & Beauty,Health Care,Diabetes Care,Blood Glucose Monitors,Health & Beauty
+Test Strips,Health & Beauty,Health Care,Diabetes Care,Test Strips,Health & Beauty
+Digital Scales Body,Health & Beauty,Medical Supplies & Equipment,Health Monitors,Body Weight Scales,Health & Beauty
+Microdermabrasion & Exfoliating Devices,Health & Beauty,Beauty & Personal Care,Tools & Accessories,Skin Care Tools,Health & Beauty
+Handheld Massagers,Health & Beauty,Wellness & Relaxation,Massage Tools & Equipment,Electric Massagers,Health & Beauty
+Electric Massagers,Health & Beauty,Wellness & Relaxation,Massage Tools & Equipment,Electric Massagers,Health & Beauty
+Massage Tools,Health & Beauty,Wellness & Relaxation,Massage Tools & Equipment,Massage Tools,Health & Beauty
+Condoms,Health & Beauty,Sexual Wellness,Safer Sex,Condoms,Health & Beauty
+Lubricants,Health & Beauty,Sexual Wellness,Safer Sex,Lubricants,Health & Beauty
+Color Lenses,Health & Beauty,Vision Care,Prescription Contact Lenses,Color Lenses,Health & Beauty
+Prescription Contact Lenses,Health & Beauty,Vision Care,Prescription Contact Lenses,,Health & Beauty
+Monthly Disposables,Health & Beauty,Vision Care,Prescription Contact Lenses,Disposable Lenses,Health & Beauty
+Sanitary Napkins,Health & Beauty,Health Care,Feminine Care,Sanitary Napkins,Health & Beauty
+Feminine Washes,Health & Beauty,Health Care,Feminine Care,Feminine Washes,Health & Beauty
+Gloves Medical,Health & Beauty,Health Care,First Aid,Gloves,Health & Beauty
+Hand Sanitizers,Health & Beauty,Health Care,First Aid,Antibiotics & Antiseptics,Health & Beauty
+Drain Pouches,Health & Beauty,Health Care,Incontinence & Ostomy,Drain Pouches,Health & Beauty
+Incontinence & Ostomy,Health & Beauty,Health Care,Incontinence & Ostomy,,Health & Beauty
+Home Nebulizer Accessories,Health & Beauty,Health Care,Respiratory Aids & Accessories,Home Nebulizer Accessories,Health & Beauty
+Balms & Moisturizers,Health & Beauty,Beauty & Personal Care,Personal Care,Lip Care,Health & Beauty
+Bath & Body Brushes,Health & Beauty,Beauty & Personal Care,Personal Care,Bath & Bathing Accessories,Health & Beauty
+Whey Protein,Health & Beauty,Sports Nutrition,Protein,Powders,Health & Beauty
+Fashion Sneakers Women,Fashion,Women's Fashion,Shoes,Fashion Sneakers,Fashion
+Slippers Women,Fashion,Women's Fashion,Shoes,Slippers,Fashion
+Ankle Boots,Fashion,Women's Fashion,Shoes,Boots,Fashion
+Heeled Sandals,Fashion,Women's Fashion,Shoes,Sandals,Fashion
+Flats Women,Fashion,Women's Fashion,Shoes,Flats,Fashion
+Running Shoes Women,Fashion,Women's Fashion,Shoes,Athletic,Fashion
+Ballet Flats,Fashion,Women's Fashion,Shoes,Flats,Fashion
+Pumps,Fashion,Women's Fashion,Shoes,Pumps,Fashion
+Mid Heels,Fashion,Women's Fashion,Shoes,Pumps,Fashion
+Sandals Women,Fashion,Women's Fashion,Shoes,Sandals,Fashion
+Loafers Women,Fashion,Women's Fashion,Shoes,Loafers & Slip-Ons,Fashion
+Low-cut Sneakers,Fashion,Women's Fashion,Shoes,Sneakers and Canvas,Fashion
+Sneakers Women,Fashion,Women's Fashion,Shoes,Sneakers and Canvas,Fashion
+Wedges,Fashion,Women's Fashion,Shoes,Sandals,Fashion
+Knee-High Boots,Fashion,Women's Fashion,Shoes,Boots,Fashion
+Mid Heel Boots,Fashion,Women's Fashion,Shoes,Boots,Fashion
+Fashion Sneakers Men,Fashion,Men's Fashion,Shoes,Fashion Sneakers,Fashion
+Slippers Men,Fashion,Men's Fashion,Shoes,Slippers,Fashion
+Running Shoes Men,Fashion,Men's Fashion,Shoes,Athletic,Fashion
+Road Running Men,Fashion,Men's Fashion,Shoes,Athletic,Fashion
+Football Shoes,Fashion,Men's Fashion,Shoes,Athletic,Fashion
+Basketball Shoes,Fashion,Men's Fashion,Shoes,Athletic,Fashion
+Sneakers Men,Fashion,Men's Fashion,Shoes,Fashion Sneakers,Fashion
+Loafers Men,Fashion,Men's Fashion,Shoes,Loafers & Slip-Ons,Fashion
+Casual Shoes Men,Fashion,Men's Fashion,Shoes,Casual,Fashion
+Lace up Shoes,Fashion,Men's Fashion,Shoes,Casual,Fashion
+Slip on Shoes,Fashion,Men's Fashion,Shoes,Casual,Fashion
+Boots Men,Fashion,Men's Fashion,Shoes,Boots,Fashion
+Chelsea Boots,Fashion,Men's Fashion,Shoes,Boots,Fashion
+Sandals Men,Fashion,Men's Fashion,Shoes,Sandals,Fashion
+Mules & Clogs,Fashion,Men's Fashion,Shoes,Mules & Clogs,Fashion
+Shoes Men,Fashion,Men's Fashion,Shoes,,Fashion
+Sneakers Boys,Fashion,Kid's Fashion,Boys,Shoes,Fashion
+Sneakers Girls,Fashion,Kid's Fashion,Girls,Shoes,Fashion
+Running Kids,Fashion,Kid's Fashion,Boys,Shoes,Fashion
+Football Kids,Fashion,Kid's Fashion,Boys,Shoes,Fashion
+Low Cut Kids,Fashion,Kid's Fashion,Boys,Shoes,Fashion
+Casual Dresses,Fashion,Women's Fashion,Clothing,Dresses,Fashion
+Evening Dresses,Fashion,Women's Fashion,Clothing,Dresses,Fashion
+Dresses,Fashion,Women's Fashion,Clothing,Dresses,Fashion
+T-Shirts Men,Fashion,Men's Fashion,Clothing,Shirts,Fashion
+Polos Men,Fashion,Men's Fashion,Clothing,Shirts,Fashion
+Casual Button-Down Shirts,Fashion,Men's Fashion,Clothing,Shirts,Fashion
+Plain Shirts,Fashion,Men's Fashion,Clothing,Shirts,Fashion
+Patterned Shirts,Fashion,Men's Fashion,Clothing,Shirts,Fashion
+Jeans Men,Fashion,Men's Fashion,Clothing,Jeans,Fashion
+Jeans Women,Fashion,Women's Fashion,Clothing,Jeans,Fashion
+Pants Women,Fashion,Women's Fashion,Clothing,Pants,Fashion
+Pants Men,Fashion,Men's Fashion,Clothing,Pants,Fashion
+Trouser Women,Fashion,Women's Fashion,Clothing,Pants,Fashion
+Cargo Pants,Fashion,Men's Fashion,Clothing,Pants,Fashion
+Skirts,Fashion,Women's Fashion,Clothing,Skirts,Fashion
+Leggings,Fashion,Women's Fashion,Clothing,Leggings,Fashion
+Long Leggings,Fashion,Women's Fashion,Clothing,Active,Fashion
+Shorts Women,Fashion,Women's Fashion,Clothing,Shorts,Fashion
+Shorts Men,Fashion,Men's Fashion,Clothing,Shorts,Fashion
+Knits & Tees,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Tanks & Camis,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Blouses,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Button-Down Shirts Women,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Tops & Tees,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Blouses & Button-Down Shirts,Fashion,Women's Fashion,Clothing,Tops & Tees,Fashion
+Fashion Hoodies Women,Fashion,Women's Fashion,Clothing,Fashion Hoodies & Sweatshirts,Fashion
+Fashion Sweatshirts Women,Fashion,Women's Fashion,Clothing,Fashion Hoodies & Sweatshirts,Fashion
+Round Neck Sweatshirt,Fashion,Women's Fashion,Clothing,Fashion Hoodies & Sweatshirts,Fashion
+Fashion Hoodies Men,Fashion,Men's Fashion,Clothing,Fashion Hoodies & Sweatshirts,Fashion
+Fashion Sweatshirts Men,Fashion,Men's Fashion,Clothing,Fashion Hoodies & Sweatshirts,Fashion
+Active Tracksuits,Fashion,Men's Fashion,Clothing,Active,Fashion
+Sweatpants,Fashion,Men's Fashion,Clothing,Active,Fashion
+Track Pants,Fashion,Men's Fashion,Clothing,Active,Fashion
+Active Shorts Men,Fashion,Men's Fashion,Clothing,Active,Fashion
+Active Shirts & Tees,Fashion,Women's Fashion,Clothing,Active,Fashion
+Cardigans,Fashion,Women's Fashion,Clothing,Sweaters,Fashion
+Pullovers,Fashion,Women's Fashion,Clothing,Sweaters,Fashion
+Lightweight Jackets Men,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Casual Jackets Women,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Wool & Pea Coats,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Blazers Women,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Blazers Suits,Fashion,Women's Fashion,Clothing,Suiting & Blazers,Fashion
+Pantsuits,Fashion,Women's Fashion,Clothing,Suiting & Blazers,Fashion
+Denim Jackets,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Trench Coats,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Coats Jackets & Vests,Fashion,Women's Fashion,Clothing,Coats Jackets & Vests,Fashion
+Vests Men,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Wool Coats Men,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Leather Jackets,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Puffer Jackets,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Cotton Jackets,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Jackets & Coats Men,Fashion,Men's Fashion,Clothing,Jackets & Coats,Fashion
+Bras,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Panties,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Lingerie,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Shapewear,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Nightgowns & Sleepshirts,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Briefs Women,Fashion,Women's Fashion,Clothing,Lingerie Sleep & Lounge,Fashion
+Boxer Briefs,Fashion,Men's Fashion,Clothing,Underwear,Fashion
+Undershirts Men,Fashion,Men's Fashion,Clothing,Underwear,Fashion
+Boxers Men,Fashion,Men's Fashion,Clothing,Underwear,Fashion
+Underwear Men,Fashion,Men's Fashion,Clothing,Underwear,Fashion
+Sets Underwear,Fashion,Men's Fashion,Clothing,Underwear,Fashion
+Sleep Sets Men,Fashion,Men's Fashion,Clothing,Sleep & Lounge,Fashion
+Swimsuits & Cover Ups,Fashion,Women's Fashion,Clothing,Swimsuits & Cover Ups,Fashion
+One-Pieces Swimwear,Fashion,Women's Fashion,Clothing,Swimsuits & Cover Ups,Fashion
+Tankinis,Fashion,Women's Fashion,Clothing,Swimsuits & Cover Ups,Fashion
+Cover-Ups,Fashion,Women's Fashion,Clothing,Swimsuits & Cover Ups,Fashion
+Board Shorts,Fashion,Men's Fashion,Clothing,Swim,Fashion
+Jumpsuits & Rompers,Fashion,Women's Fashion,Clothing,Jumpsuits Rompers & Overalls,Fashion
+Kimonos & Capes,Fashion,Women's Fashion,Clothing,Kimonos & Capes,Fashion
+Socks Men,Fashion,Men's Fashion,Clothing,Socks,Fashion
+Casual Socks Men,Fashion,Men's Fashion,Clothing,Socks,Fashion
+Socks & Hosiery,Fashion,Women's Fashion,Clothing,Socks & Hosiery,Fashion
+Tights,Fashion,Women's Fashion,Clothing,Socks & Hosiery,Fashion
+Casual Socks Women,Fashion,Women's Fashion,Clothing,Socks & Hosiery,Fashion
+Cross-Body Bags,Fashion,Women's Fashion,Handbags & Wallets,Cross-Body Bags,Fashion
+Shoulder Bags,Fashion,Women's Fashion,Handbags & Wallets,Shoulder Bags,Fashion
+Tote Bags,Fashion,Women's Fashion,Handbags & Wallets,Handbags,Fashion
+Handbags,Fashion,Women's Fashion,Handbags & Wallets,Handbags,Fashion
+Backpack Bags,Fashion,Women's Fashion,Handbags & Wallets,Backpack Bags,Fashion
+Top-Handle Bags,Fashion,Women's Fashion,Handbags & Wallets,Top-Handle Bags,Fashion
+Clutches,Fashion,Women's Fashion,Handbags & Wallets,Clutches,Fashion
+Waist Bags,Fashion,Women's Fashion,Handbags & Wallets,Waist Bags,Fashion
+Wallets Women,Fashion,Women's Fashion,Accessories,Wallets Card Cases & Money Organizers,Fashion
+Wallets Men,Fashion,Men's Fashion,Accessories,Wallets Card Cases & Money Organizers,Fashion
+Sunglasses Women,Fashion,Women's Fashion,Accessories,Sunglasses & Eyewear Accessories,Sunglass & Eyewear
+Sunglasses Men,Fashion,Men's Fashion,Accessories,Sunglasses & Eyewear Accessories,Sunglass & Eyewear
+Fashion Scarves,Fashion,Women's Fashion,Accessories,Scarves & Wraps,Fashion
+Scarves & Wraps,Fashion,Women's Fashion,Accessories,Scarves & Wraps,Fashion
+Cold Weather Scarves,Fashion,Women's Fashion,Accessories,Scarves & Wraps,Fashion
+Hair Accessories,Fashion,Women's Fashion,Accessories,Hair Accessories,Fashion
+Belts Women,Fashion,Women's Fashion,Accessories,Belts,Fashion
+Belts Men,Fashion,Men's Fashion,Accessories,Belts,Fashion
+Baseball Caps,Fashion,Men's Fashion,Accessories,Hats & Caps,Fashion
+Bags Men,Fashion,Men's Fashion,Bags,,Fashion
+Backpacks Men,Fashion,Men's Fashion,Bags,Backpacks,Fashion
+Messenger Bags,Fashion,Men's Fashion,Bags,Messenger Bags,Fashion
+Suitcases,Fashion,Luggage & Travel Gear,Luggage,Suitcases,Fashion
+Fine Jewelry,Fashion,Women's Fashion,Jewelry,Fine,Fashion
+Necklaces Fine,Fashion,Women's Fashion,Jewelry,Fine,Fashion
+Necklaces Fashion,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Rings Women,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Bracelets Women,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Earrings,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Jewelry Sets,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Chains,Fashion,Women's Fashion,Jewelry,Fashion,Fashion
+Rings Men,Fashion,Men's Fashion,Jewelry,Rings,Fashion
+Bracelets Men,Fashion,Men's Fashion,Jewelry,Bracelets,Fashion
+Necklaces Men,Fashion,Men's Fashion,Jewelry,Necklaces,Fashion
+Casual Watch Women,Fashion,Watches & Sunglasses,Women's Watches,Casual,Watches
+Casual Watch Men,Fashion,Watches & Sunglasses,Men's Watches,Casual,Watches
+Analogue Watch,Fashion,Watches & Sunglasses,Men's Watches,Analogue,Watches
+Traditional Women,Fashion,Women's Fashion,Traditional,,Fashion
+Bodysuits Baby Boys,Fashion,Baby,Baby Boys,Clothing,Fashion
+Bodysuits Baby Girls,Fashion,Baby,Baby Girls,Clothing,Fashion
+Dresses Baby Girls,Fashion,Baby,Baby Girls,Clothing,Fashion
+Pants Baby Boys,Fashion,Baby,Baby Boys,Clothing,Fashion
+Pajama Sets Baby Boys,Fashion,Baby,Baby Boys,Clothing,Fashion
+Pajama Sets Baby Girls,Fashion,Baby,Baby Girls,Clothing,Fashion
+Pajama Sets Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Pajama Sets Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Tees Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Tees Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Boxers Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Underwear Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Underwear Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Undershirts Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Undershirts Tanks Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Socks Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Socks Tights Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Shorts Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Pants Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Leggings Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Dresses Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Fashion Hoodies Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Fashion Hoodies Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Short Sets Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Skirt Sets Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Clothing Sets Boys,Fashion,Kid's Fashion,Boys,Clothing,Fashion
+Casual Girls,Fashion,Kid's Fashion,Girls,Clothing,Fashion
+Bags Girls,Fashion,Kid's Fashion,Girls,Bags,Fashion
+Motor Oils,Automobile,Oils & Fluids,Oils,Motor Oils,Oils & Liquids
+Oils Automobile,Automobile,Oils & Fluids,Oils,,Oils & Liquids
+Inflator and gauges,Automobile,Tyre & Rim,Inflator and gauges,,Tires
+Helmets,Automobile,Motorcycle & Powersports,Protective Gear,Helmets,Other Car Accessories
+Air Fresheners Car,Automobile,Interior Accessories,Air Fresheners,,Other Car Accessories
+Windshield Sunshades,Automobile,Interior Accessories,Sun Protection,Sunshades,Other Car Accessories
+Car Vacuums,Automobile,Car Care,Interior Care,Vacuums,Other Car Accessories
+Treadmills,Sporting Goods,Sports & Fitness,Exercise & Fitness,Cardio Training,Sport Equipment
+Exercise Bikes,Sporting Goods,Sports & Fitness,Exercise & Fitness,Cardio Training,Sport Equipment
+Elliptical Trainers,Sporting Goods,Sports & Fitness,Exercise & Fitness,Cardio Training,Sport Equipment
+Dumbbells,Sporting Goods,Sports & Fitness,Exercise & Fitness,Strength Training Equipment,Sport Equipment
+Home Gyms,Sporting Goods,Sports & Fitness,Exercise & Fitness,Strength Training Equipment,Sport Equipment
+Exercise Bands,Sporting Goods,Sports & Fitness,Exercise & Fitness,Accessories,Sport Equipment
+Sports Water Bottles,Sporting Goods,Outdoor Recreation,Accessories,Sports Water Bottles,Sport Equipment
+Roller Skates,Sporting Goods,Outdoor Recreation,Skates Skateboards & Scooters,Inline & Roller Skating,Sport Equipment
+Flashlights,Sporting Goods,Outdoor Recreation,Camping & Hiking,Lights & Lanterns,Sport Equipment
+Electric Grills,Garden & Outdoors,Grills & Outdoor Cooking,Grills,Electric Grills,Garden & Outdoors
+Charcoal Grills,Garden & Outdoors,Grills & Outdoor Cooking,Grills,Charcoal Grills,Garden & Outdoors
+Hammocks,Garden & Outdoors,Patio Furniture & Accessories,Hammocks Stands & Accessories,Hammocks,Garden & Outdoors
+Leaf Blowers & Vacuums,Garden & Outdoors,Outdoor Power Tools,Leaf Blowers & Vacuums,,Garden & Outdoors
+Repellents,Garden & Outdoors,Farm & Ranch,Pest Control,Repellents,Garden & Outdoors
+Bug Zappers,Garden & Outdoors,Farm & Ranch,Pest Control,Bug Zappers,Garden & Outdoors
+Facial Tissues,Grocery,Paper & Plastic,Facial Tissues,,Grocery
+Paper Towels,Grocery,Paper & Plastic,Paper Towels,,Grocery
+Toilet Paper,Grocery,Paper & Plastic,Toilet Paper Wipes & Sprays,Toilet Paper,Grocery
+Personal Cleansing Wipes,Grocery,Paper & Plastic,Toilet Paper Wipes & Sprays,Personal Cleansing Wipes,Grocery
+Food Storage Bags,Grocery,Paper & Plastic,Disposable Food Storage,Food Storage Bags,Grocery
+Lint Removal,Grocery,Laundry,Lint Removal,,Grocery
+Small Packs Dishwasher,Grocery,Dishwashing,Dishwasher Detergent,Small Packs,Grocery
+Insecticides,Grocery,Household Supplies,Insecticides,,Grocery
+Sponges,Grocery,Household Cleaning,Cleaning Tools,Sponges,Grocery
+Cleaning Cloths,Grocery,Household Cleaning,Cleaning Tools,Cleaning Cloths,Grocery
+Honey,Grocery,Cooking & Baking,Syrups Sugars & Sweeteners,Honey,Grocery
+Sugar Substitutes,Grocery,Cooking & Baking,Sugar Substitutes,,Grocery
+Condensed Milk,Grocery,Cooking & Baking,Condensed & Powdered Milk,,Grocery
+Chocolate Spread,Grocery,Food Cupboard,Margarine Jams Honey & Spreads,Chocolate Spread,Grocery
+Nuts & Seeds,Grocery,Food Cupboard,Snacks Crisps & Nuts,Nuts & Seeds,Grocery
+Ground Coffee,Grocery,Beverages,Coffee Tea & Cocoa,Coffee,Grocery
+Single-Serve Capsules,Grocery,Beverages,Coffee Tea & Cocoa,Coffee,Grocery
+Air Fresheners Spray,Grocery,Air Fresheners,Spray,,Grocery
+AAA Batteries,Grocery,Household Batteries,AAA,,Grocery
+AA Batteries,Grocery,Household Batteries,AA,,Grocery
+Disposable Diapers,Baby Products,Diapering,Disposable Diapers,,Diapers
+Diaper Bags,Baby Products,Diapering,Diaper Bags,,Diapers
+Baby Bottles,Baby Products,Feeding,Bottle-Feeding,Bottles,Gear Stroller & Accessories
+Highchairs,Baby Products,Feeding,Highchairs & Booster Seats,Highchairs,Gear Stroller & Accessories
+Single Electric Breast Pump,Baby Products,Feeding,Breastfeeding,Breast Pumps,Gear Stroller & Accessories
+Strollers,Baby Products,Strollers & Accessories,Strollers,,Gear Stroller & Accessories
+Cribs,Baby Products,Nursery,Beds Cribs & Bedding,Cribs & Nursery Beds,Gear Stroller & Accessories
+Bouncers,Baby Products,Gear,Swings Jumpers & Bouncers,Bouncers,Gear Stroller & Accessories
+Swings,Baby Products,Gear,Swings Jumpers & Bouncers,Swings,Gear Stroller & Accessories
+Soft Carriers,Baby Products,Gear,Backpacks & Carriers,Soft Carriers,Gear Stroller & Accessories
+Baby Shampoo,Baby Products,Bathing & Skin Care,Shampoo,,Gear Stroller & Accessories
+Diaper Creams,Baby Products,Bathing & Skin Care,Skin Care,Diaper Creams,Gear Stroller & Accessories
+Bathing Tubs,Baby Products,Bathing & Skin Care,Bathing Tubs & Seats,,Gear Stroller & Accessories
+Potties & Seats,Baby Products,Potty Training,Potties & Seats,,Gear Stroller & Accessories
+Conditioners Baby,Baby Products,Bathing & Skin Care,Conditioners,,Gear Stroller & Accessories
+Games PS4,Gaming,Playstation,PlayStation 4,Games,Gaming Console
+Consoles PS5,Gaming,Playstation,PlayStation 5,Consoles,Gaming Console
+Consoles PS4,Gaming,Playstation,PlayStation 4,Consoles,Gaming Console
+PS5 Games,Gaming,Playstation,PlayStation 5,PS 5 Games,Gaming Console
+Controllers PS5,Gaming,Playstation,PlayStation 5,Controllers,Gaming Console
+Accessories PS5,Gaming,Playstation,PlayStation 5,Accessories,Gaming Console
+Gamepads PS4,Gaming,Playstation,PlayStation 4,Controllers,Video Game Accessories
+PlayStation 4 Digital,Gaming,Digital Games,PlayStation 4,,Gaming Console
+Commodore 64,Gaming,Retro Gaming & Microconsoles,Commodore 64,,Gaming Console
+Board Games,Toys & Games,Games,Board Games,,Board & Card Games
+Card Games,Toys & Games,Games,Card Games,,Board & Card Games
+Coloring Pens,Toys & Games,Arts & Crafts,Drawing & Painting Supplies,Coloring Pens & Markers,Toys & Games
+Ride-On Toys,Toys & Games,Tricycles Scooters & Wagons,Ride-On Toys,,Toys & Games
+Kitchen Toys,Toys & Games,Dress Up & Pretend Play,Pretend Play,Kitchen Toys,Toys & Games
+Kiddie Pools,Toys & Games,Sports & Outdoor Play,Pools & Water Fun,Kiddie Pools,Toys & Games
+Battling Tops,Toys & Games,Games,Battling Tops,,Board & Card Games
+Literature,Books Movies and Music,Fiction,Literature,,Books & Media
+Adult Fiction,Books Movies and Music,Fiction,Adult Fiction,,Books & Media
+Business & Economics,Books Movies and Music,Business & Finance,Business & Economics,,Books & Media
+Motivational & Self-Help,Books Movies and Music,Motivational & Self-Help,,,Books & Media
+Islamic Books,Books Movies and Music,Religion,Islamic Books,,Books & Media
+Medical Books,Books Movies and Music,Science & Technology,Medical,,Books & Media
+Dry Cat Food,Pet Supplies,Cats,Food,Dry,Pet Supplies
+Litter,Pet Supplies,Cats,Litter & Housebreaking,Litter,Pet Supplies
+Dry Dog Food,Pet Supplies,Dogs,Food,Dry,Pet Supplies
+Specialty Metals,Industrial & Scientific,Raw Materials,Metals & Alloys,Specialty Metals,Others
+</script>
+<script type="text/babel">
+const{useState,useEffect}=React;
+const CL={"Fashion":"bg-pink-100 text-pink-700","Electronics":"bg-blue-100 text-blue-700","Home & Office":"bg-amber-100 text-amber-700","Health & Beauty":"bg-emerald-100 text-emerald-700","Phones & Tablets":"bg-purple-100 text-purple-700","Computing":"bg-indigo-100 text-indigo-700","Sporting Goods":"bg-orange-100 text-orange-700","Grocery":"bg-lime-100 text-lime-700","Automobile":"bg-slate-100 text-slate-700","Baby Products":"bg-rose-100 text-rose-700","Gaming":"bg-fuchsia-100 text-fuchsia-700","Toys & Games":"bg-green-100 text-green-700","Garden & Outdoors":"bg-teal-100 text-teal-700","Books Movies and Music":"bg-sky-100 text-sky-700","Pet Supplies":"bg-yellow-100 text-yellow-700","Industrial & Scientific":"bg-cyan-100 text-cyan-700"};
+function tok(t){return t.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(x=>x.length>1);}
+function sc(c,ts,q){let s=q&&c.s.includes(q)?30:0;for(const t of ts){if(!c.s.includes(t))continue;if(c.p.toLowerCase().includes(t))s+=12;if(c.l4.toLowerCase().includes(t))s+=8;if(c.l3.toLowerCase().includes(t))s+=6;if(c.l2.toLowerCase().includes(t))s+=4;if(c.l1.toLowerCase().includes(t))s+=2;if(c.v.toLowerCase().includes(t))s+=5;s+=1;}return s;}
+function App(){
+const[cats,set]=useState([]);
+const[q,setQ]=useState("");
+const[res,setR]=useState([]);
+const[done,setD]=useState(false);
+useEffect(()=>{
+const r=Papa.parse(document.getElementById("d").textContent,{header:true,skipEmptyLines:true}).data;
+set(r.filter(x=>x.path&&x.l_1).map(x=>({p:x.path,l1:x.l_1,l2:x.l_2||"",l3:x.l_3||"",l4:x.l_4||"",v:x.vc||"",s:((x.l_1||"")+" "+(x.l_2||"")+" "+(x.l_3||"")+" "+(x.l_4||"")+" "+x.path+" "+(x.vc||"")).toLowerCase()})));
+},[]);
+const go=(v)=>{const ts=tok(v),fq=v.toLowerCase().replace(/[^a-z0-9\s]/g," ").trim();setR(cats.map(c=>({c,s:sc(c,ts,fq)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,8).map(x=>x.c));setD(true);};
+return(<div className="max-w-2xl mx-auto px-4 py-8">
+<div className="text-center mb-6">
+<div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-3">J</div>
+<h1 className="text-2xl font-bold text-gray-900">Category Recommender</h1>
+<p className="text-gray-500 text-sm mt-1">Type a product name to get the right Jumia category</p>
+<p className="text-xs text-gray-400 mt-0.5">{cats.length} categories loaded</p>
+</div>
+<div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-4">
+<div className="flex gap-2">
+<input type="text" value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go(q)} placeholder="e.g. wireless earbuds, summer dress, motor oil..." className="flex-1 px-3 py-2.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50"/>
+<button onClick={()=>go(q)} disabled={!q.trim()} className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 text-white text-sm font-medium rounded-lg transition-colors">Search</button>
+</div>
+<div className="flex flex-wrap gap-1.5 mt-3 items-center">
+<span className="text-xs text-gray-400">Try:</span>
+{["iPhone","running shoes","face cream","air fryer","laptop","motor oil","yoga mat","summer dress"].map(e=><button key={e} onClick={()=>{setQ(e);go(e);}} className="text-xs px-2.5 py-1 rounded-full border border-gray-200 hover:bg-orange-50 hover:border-orange-200 hover:text-orange-700 transition-colors">{e}</button>)}
+</div>
+</div>
+{done&&res.length===0&&<p className="text-center text-gray-400 py-8 text-sm">No results found. Try different keywords.</p>}
+{res.length>0&&<div className="space-y-2">
+<p className="text-xs text-gray-400 uppercase tracking-wide font-medium px-1 mb-3">Top {res.length} matches</p>
+{res.map((c,i)=>{const cr=[c.l1,c.l2,c.l3,c.l4,c.p].filter(Boolean);return(<div key={i} className={`bg-white rounded-xl border p-4 hover:shadow-md transition-shadow ${i===0?"border-orange-300 shadow-sm":"border-gray-200"}`}><div className="flex items-start justify-between gap-3"><div className="flex-1 min-w-0"><div className="flex flex-wrap items-center gap-1 mb-2">{cr.map((x,j)=><React.Fragment key={j}><span className={`text-xs ${j===cr.length-1?"font-semibold text-gray-800":"text-gray-400"}`}>{x}</span>{j<cr.length-1&&<span className="text-gray-300 mx-0.5">›</span>}</React.Fragment>)}</div>{c.v&&<div className="flex items-center gap-1.5 mt-1"><span className="text-xs text-gray-400">Seller category:</span><span className="text-xs font-medium px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">{c.v}</span></div>}</div><div className="flex flex-col items-end gap-1.5">{i===0&&<span className="text-xs px-2 py-0.5 bg-orange-500 text-white rounded-full font-medium">Best Match</span>}<span className={`text-xs px-2 py-0.5 rounded-full font-medium ${CL[c.l1]||"bg-gray-100 text-gray-600"}`}>{c.l1}</span></div></div></div>);})}
+<p className="text-xs text-center text-gray-300 pt-2">Ranked by keyword relevance</p>
+</div>}
+{!done&&cats.length>0&&<div className="text-center py-14"><p className="text-sm text-gray-400">Type a product name above to get category recommendations</p></div>}
+</div>);
+}
+ReactDOM.createRoot(document.getElementById("r")).render(<App/>);
+</script>
+</body>
+</html>
